@@ -6,12 +6,13 @@ type LimitedElementType = Extract<
   "button" | "a" | "span" | React.JSXElementConstructor<unknown>
 >;
 
-type ButtonProps<T extends LimitedElementType> = T extends LimitedElementType
-  ? { as: T } & React.ComponentPropsWithoutRef<T>
-  : never;
+type ButtonProps<T extends LimitedElementType = "button"> =
+  T extends LimitedElementType
+    ? { as?: T } & React.ComponentPropsWithoutRef<T>
+    : never;
 
-function Button<T extends LimitedElementType>({
-  as,
+function Button<T extends LimitedElementType = "button">({
+  as = "button",
   ...props
 }: ButtonProps<T>) {
   const Component = as;
@@ -26,12 +27,12 @@ function App() {
   return (
     <>
       <Button as="button">actual button</Button>
+      <Button>default button</Button>
       <Button as="a" href="/">
         anchor tag
       </Button>
-      <Button as={ValidDivComponent} name="div component" />
+      <Button as={ValidDivComponent} name="Hello" />
     </>
   );
 }
-
 export default App;
